@@ -10,7 +10,7 @@ const AddUrlPage = () => {
   const { token } = useStoreContext();
   const onSubmit = async (data) => {
     try {
-      const { data: res } = await api.post('/urls/shorten', data, {
+      const { data: res } = await api.post('/api/urls/shorten', data, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
