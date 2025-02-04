@@ -17,7 +17,7 @@ const LoginForm = () => {
   const onSubmit = async (data) => {
     setLoader(true);
     try {
-      const { data: response } = await api.post("auth/public/login", data);
+      const { data: response } = await api.post("/api/auth/public/login", data);
       setToken(response.token)
       reset();
       navigate("/dashboard");

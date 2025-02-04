@@ -4,7 +4,7 @@ export const useFetchTotalClicks = (token, onError) => {
   return useQuery(
     "url-totalclick",
     async () => {
-      return await api.get("/urls/totalClicks?startDate=2025-01-27&endDate=2025-02-27", {
+      return await api.get("/api/urls/totalClicks?startDate=2025-01-27&endDate=2025-02-27", {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -29,7 +29,7 @@ export const useFetchAllUrls = (token, onError) => {
   return useQuery(
     "my-shortenUrls",
     async () => {
-      return await api.get("/urls/myUrls", {
+      return await api.get("/api/urls/myUrls", {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",

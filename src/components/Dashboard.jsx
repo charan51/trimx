@@ -23,7 +23,7 @@ const Dashboard = () => {
   const { token } = useStoreContext();
   const { isLoading: loader, data: totalClicks } = useFetchTotalClicks(token, onError);
   const { isLoading, data: myShortenUrls, refetch } = useFetchAllUrls(token, onError);
-  const subDomain = import.meta.env.VITE_FRONT_ENDURL.replace(
+  const subDomain = import.meta.env.VITE_REACT_FRONT_ENDURL.replace(
     /^https?:\/\//,
     ""
   );
@@ -155,31 +155,32 @@ const Dashboard = () => {
                         <p className="text-sm text-gray-700">
                           Short URL: <span className="font-semibold">{url.shortUrl}</span>
                         </p>
-                        {/* <a
-                          href={`${import.meta.env. }/${url.shortUrl}`}
+                        <a
+                          href={`${import.meta.env.VITE_REACT_FRONT_ENDURL}/s/${url.shortUrl}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:text-blue-800"
                           onClick={(e) => e.stopPropagation()}
-                        > */}
-                        <Link
+                        >
+                        {/* <Link
                           className="text-blue-600 hover:text-blue-800"
                           target="_"
-                          to={import.meta.env.VITE_REACT_FRONT_ENDURL + "/s" + `${shortUrl}`}
-                        ></Link>
+                          to={import.meta.env.VITE_REACT_FRONT_ENDURL + "/s/" + `${url.shortUrl}`}
+                        ></Link> */}
                         <FontAwesomeIcon icon={faExternalLinkAlt} className="h-4 w-4" />
+                        </a>
 
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            copyToClipboard(import.meta.env.VITE_REACT_FRONT_ENDURL + "/s" + `${shortUrl}`);
+                            copyToClipboard(import.meta.env.VITE_REACT_FRONT_ENDURL + "/s/" + `${url.shortUrl}`);
                           }}
                           className="text-gray-500 hover:text-gray-700"
                         >
 
-                          {subDomain + "/s/" + `${shortUrl}`}
+                          {/* {subDomain + "/s/" + `${url.shortUrl}`} */}
                         <FontAwesomeIcon
-                          icon={copiedUrl === `${import.meta.env.VITE_REACT_FRONT_ENDURL + "/s" + shortUrl}` ? faCheck : faCopy}
+                          icon={copiedUrl === `${import.meta.env.VITE_REACT_FRONT_ENDURL + "/s/" + url.shortUrl}` ? faCheck : faCopy}
                           className="h-4 w-4"
                         />
                       </button>
@@ -198,7 +199,7 @@ const Dashboard = () => {
           {/* Chart Section */}
           <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Click Performance for: <span className="text-blue-600">{selectedUrl?.orginalUrl || `Short URL: ${selectedUrl?.shortUrl}`}</span>
+              Click Performance for: <span className="text-blue-600">{selectedUrl?.orginalUrl || `Short URL: ${selectedUrl?.shortUrl ? selectedUrl?.shortUrl :""}`}</span>
             </h2>
             <Line data={chartData} options={chartOptions} />
           </div>
