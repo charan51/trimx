@@ -17,7 +17,7 @@ const AddUrlPage = () => {
           Authorization: "Bearer " + token
         }
       });
-      const shortenUrl = `${import.meta.env.VITE_REACT_SUBDOMAINI}/${res.shortUrl}`;
+      const shortenUrl = `${import.meta.env.VITE_REACT_FRONT_ENDURL + "/s" + res.shortUrl}`;
       navigator.clipboard.writeText(shortenUrl).then(() => {
         toast.success("Short url copied to clipboard", {
           position: "bottom-center",

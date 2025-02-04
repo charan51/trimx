@@ -22,6 +22,7 @@ const AppRouter = () => {
                 <Route path="/signup" element={<SignupForm />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/createurl" element={<AddUrlPage />} />
+                <Route path="/s/:url" element={ShortenUrlPage} />
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
             <Footer />

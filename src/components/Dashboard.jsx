@@ -12,7 +12,7 @@ import {
 } from "chart.js";
 import { useStoreContext } from "../contextApi";
 import { useFetchAllUrls, useFetchTotalClicks } from "../hooks/useQuery";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt, faCopy, faCheck } from "@fortawesome/free-solid-svg-icons";
 
@@ -23,7 +23,10 @@ const Dashboard = () => {
   const { token } = useStoreContext();
   const { isLoading: loader, data: totalClicks } = useFetchTotalClicks(token, onError);
   const { isLoading, data: myShortenUrls, refetch } = useFetchAllUrls(token, onError);
-
+  const subDomain = import.meta.env.VITE_FRONT_ENDURL.replace(
+    /^https?:\/\//,
+    ""
+  );
   const [selectedUrl, setSelectedUrl] = useState(null);
   const [copiedUrl, setCopiedUrl] = useState(null);
 
@@ -103,11 +106,10 @@ const Dashboard = () => {
                   <div
                     key={url.id}
                     onClick={() => setSelectedUrl(url)}
-                    className={`flex items-center justify-between p-4 rounded-lg cursor-pointer transition ${
-                      selectedUrl?.id === url.id
-                        ? "bg-blue-100 border-l-4 border-blue-600"
-                        : "hover:bg-gray-100"
-                    }`}
+                    className={`flex items-center justify-between p-4 rounded-lg cursor-pointer transition ${selectedUrl?.id === url.id
+                      ? "bg-blue-100 border-l-4 border-blue-600"
+                      : "hover:bg-gray-100"
+                      }`}
                   >
                     {/* URL Details */}
                     <div className="flex flex-col">
@@ -115,9 +117,8 @@ const Dashboard = () => {
                       {url.orginalUrl ? (
                         <div className="flex items-center space-x-2">
                           <p
-                            className={`text-sm font-medium ${
-                              selectedUrl?.id === url.id ? "text-blue-600" : "text-gray-800"
-                            }`}
+                            className={`text-sm font-medium ${selectedUrl?.id === url.id ? "text-blue-600" : "text-gray-800"
+                              }`}
                           >
                             {url.orginalUrl.length > 30
                               ? `${url.orginalUrl.slice(0, 30)}...`
@@ -154,50 +155,58 @@ const Dashboard = () => {
                         <p className="text-sm text-gray-700">
                           Short URL: <span className="font-semibold">{url.shortUrl}</span>
                         </p>
-                        <a
-                          href={`${import.meta.env.VITE_REACT_SUBDOMAINI}/${url.shortUrl}`}
+                        {/* <a
+                          href={`${import.meta.env. }/${url.shortUrl}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:text-blue-800"
                           onClick={(e) => e.stopPropagation()}
-                        >
-                          <FontAwesomeIcon icon={faExternalLinkAlt} className="h-4 w-4" />
-                        </a>
+                        > */}
+                        <Link
+                          className="text-blue-600 hover:text-blue-800"
+                          target="_"
+                          to={import.meta.env.VITE_REACT_FRONT_ENDURL + "/s" + `${shortUrl}`}
+                        ></Link>
+                        <FontAwesomeIcon icon={faExternalLinkAlt} className="h-4 w-4" />
+
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            copyToClipboard(`${import.meta.env.VITE_REACT_SUBDOMAINI}/${url.shortUrl}`);
+                            copyToClipboard(import.meta.env.VITE_REACT_FRONT_ENDURL + "/s" + `${shortUrl}`);
                           }}
                           className="text-gray-500 hover:text-gray-700"
                         >
-                          <FontAwesomeIcon
-                            icon={copiedUrl === `${import.meta.env.VITE_REACT_SUBDOMAINI}/${url.shortUrl}` ? faCheck : faCopy}
-                            className="h-4 w-4"
-                          />
-                        </button>
-                      </div>
 
-                      {/* Click Count */}
-                      <p className="text-xs text-gray-500">
-                        Clicks: <span className="font-semibold">{url.clickCount}</span>
-                      </p>
+                          {subDomain + "/s/" + `${shortUrl}`}
+                        <FontAwesomeIcon
+                          icon={copiedUrl === `${import.meta.env.VITE_REACT_FRONT_ENDURL + "/s" + shortUrl}` ? faCheck : faCopy}
+                          className="h-4 w-4"
+                        />
+                      </button>
                     </div>
+
+                    {/* Click Count */}
+                    <p className="text-xs text-gray-500">
+                      Clicks: <span className="font-semibold">{url.clickCount}</span>
+                    </p>
+                  </div>
                   </div>
                 ))}
-              </div>
-            </div>
-
-            {/* Chart Section */}
-            <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-lg">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                Click Performance for: <span className="text-blue-600">{selectedUrl?.orginalUrl || `Short URL: ${selectedUrl?.shortUrl}`}</span>
-              </h2>
-              <Line data={chartData} options={chartOptions} />
             </div>
           </div>
+
+          {/* Chart Section */}
+          <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Click Performance for: <span className="text-blue-600">{selectedUrl?.orginalUrl || `Short URL: ${selectedUrl?.shortUrl}`}</span>
+            </h2>
+            <Line data={chartData} options={chartOptions} />
+          </div>
         </div>
-      )}
-    </div>
+        </div>
+  )
+}
+    </div >
   );
 };
 
